@@ -10,38 +10,25 @@ import java.time.LocalDate;
 
 
 @Entity
-@Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "date", "restaurant"}, name = "meals_unique_user_date_restaurant_idx")})
+@Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id", "meal_id"}, name = "dish_unique_menu_meal_idx")})
 public class Dish extends AbstractNamedEntity{
 
-    @Column(name = "date", nullable = false)
-    @NotNull
-    private LocalDate date;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id", nullable = false)
+    @JoinColumn(name = "menu_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
-    private Restaurant restaurant;
+    private Menu menu;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "meal_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotNull
+    private Meal meal;
+
 
     @Column(name = "price", nullable = false)
     @Range(min = 0)
     private float price;
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
 
     public float getPrice() {
         return price;
@@ -51,13 +38,27 @@ public class Dish extends AbstractNamedEntity{
         this.price = price;
     }
 
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
+    public Meal getMeal() {
+        return meal;
+    }
+
+    public void setMeal(Meal meal) {
+        this.meal = meal;
+    }
+
     public Dish() {
     }
 
     public Dish(int id, String name, LocalDate date, Restaurant restaurant, float price) {
         super(id, name);
-        this.date = date;
-        this.restaurant = restaurant;
         this.price = price;
     }
 
